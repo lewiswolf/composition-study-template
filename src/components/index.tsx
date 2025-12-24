@@ -15,23 +15,20 @@ export const Submissions: FC<{
 	const [index_playing, setIndex] = useState<number>(0)
 	return (
 		<>
-			{(randomise_config ? random_config_cache : config).map((S: SubmissionJSON, i: number) => {
-				i++
-				return (
-					<Submission
-						{...S}
-						key={i.toString()}
-						updatePlaying={index_playing === i + 1}
-						onPlay={(b: boolean) => {
-							if (b) {
-								setIndex(i + 1)
-							} else {
-								setIndex(0)
-							}
-						}}
-					/>
-				)
-			})}
+			{(randomise_config ? random_config_cache : config).map((S: SubmissionJSON, i: number) => (
+				<Submission
+					{...S}
+					key={i.toString()}
+					updatePlaying={index_playing === i + 1}
+					onPlay={(b: boolean) => {
+						if (b) {
+							setIndex(i + 1)
+						} else {
+							setIndex(0)
+						}
+					}}
+				/>
+			))}
 		</>
 	)
 }

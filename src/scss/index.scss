@@ -105,10 +105,10 @@ main {
 	margin: 200px 0;
 	text-align: right;
 	display: grid;
-	grid-gap: 100px;
+	gap: 100px;
 
 	@media (max-width: utils.$ipad) {
 		margin: 100px 0;
-		grid-gap: 50px;
+		gap: 50px;
 	}
 }

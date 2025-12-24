@@ -11,12 +11,12 @@ export const Submission: FC<{
 	audio?: SubmissionJSON['audio']
 	video?: SubmissionJSON['video']
 	updatePlaying?: boolean
-	onPlay: (b: boolean) => void
+	onPlay?: (b: boolean) => void
 }> = ({
-	author = undefined,
+	author,
 	audio = [],
 	video = [],
-	updatePlaying = undefined,
+	updatePlaying,
 	onPlay = () => {
 		/* */
 	},
@@ -90,7 +90,7 @@ export const Submission: FC<{
 
 	return (
 		<div className='submission' ref={self}>
-			{audio.length > 0 ? (
+			{audio.length > 0 &&
 				audio.map((filename: string) => (
 					<Fragment key={filename}>
 						<audio ref={audio_ref} src={`${import.meta.env.BASE_URL}/audio/${filename}`} />
@@ -118,50 +118,42 @@ export const Submission: FC<{
 							}}
 						/>
 					</Fragment>
-				))
-			) : (
-				<></>
-			)}
-			{video.length > 0 ? (
+				))}
+			{video.length > 0 && (
 				<div className='videos'>
 					{video.map((hash: string) => (
 						<iframe
 							allow='accelerometer; autoplay; encrypted-media; fullscreen; gyroscope;'
 							key={hash}
-							src={`https://www.youtube-nocookie.com/embed/${hash}?theme=dark&color=white`}
+							referrerPolicy='strict-origin-when-cross-origin'
+							src={`https://www.youtube.com/embed/${hash}?theme=dark&color=white`}
 							title={author ? author.name : 'anonymous'}
 						/>
 					))}
 				</div>
-			) : (
-				<></>
 			)}
 			<h3>{author ? author.name.toLowerCase() : 'anonymous'}</h3>
-			{author ? (
-				author.links.map((obj: { href: string; type: 'instagram' | 'vimeo' | 'website' }) => {
-					const href = ((): string => {
-						switch (obj.type) {
-							case 'instagram':
-								return `https://instagram.com/${obj.href}`
-							case 'vimeo':
-								return `https://vimeo.com/${obj.href}`
-							default:
-								return obj.href
-						}
-					})()
-					return (
-						<p key={obj.href}>
-							<i>{obj.type}</i>
-							<span>{' : '}</span>
-							<a href={href} rel='noreferrer' target='_blank'>
-								{obj.href.replace(/.+\/\/|www.|/g, '')}
-							</a>
-						</p>
-					)
-				})
-			) : (
-				<></>
-			)}
+			{author?.links.map((obj: { href: string; type: 'instagram' | 'vimeo' | 'website' }) => {
+				const href = ((): string => {
+					switch (obj.type) {
+						case 'instagram':
+							return `https://instagram.com/${obj.href}`
+						case 'vimeo':
+							return `https://vimeo.com/${obj.href}`
+						default:
+							return obj.href
+					}
+				})()
+				return (
+					<p key={obj.href}>
+						<i>{obj.type}</i>
+						<span> : </span>
+						<a href={href} rel='noreferrer' target='_blank'>
+							{obj.href.replace(/.+\/\/|www.|/g, '')}
+						</a>
+					</p>
+				)
+			})}
 		</div>
 	)
 }
