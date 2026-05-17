@@ -34,14 +34,13 @@
 		"allowJs": false,
 		// interop constraints
 		"allowImportingTsExtensions": true,
-		"allowSyntheticDefaultImports": true,
-		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"isolatedModules": true,
 		// language and environment
 		"jsx": "react-jsx",
-		"lib": ["DOM", "DOM.iterable", "ESNext"],
+		"lib": ["DOM", "ESNext"],
 		"target": "ESNext",
+		"types": ["node", "react", "react-dom"],
 		// compilation
 		"module": "ESNext",
 		"moduleDetection": "force",

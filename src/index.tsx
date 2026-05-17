@@ -6,7 +6,7 @@ import { createRoot } from 'react-dom/client'
 import { Submissions } from './components/index.tsx'
 import './scss/index.scss'
 
-createRoot(document.getElementById('root') as NonNullable<HTMLDivElement>).render(
+createRoot(document.querySelector('#root') as NonNullable<HTMLDivElement>).render(
 	<StrictMode>
 		<header>
 			<h1>Title</h1>

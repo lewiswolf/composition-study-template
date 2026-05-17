@@ -22,7 +22,7 @@ export const Submissions: FC<{
 					{...S}
 					key={i.toString()}
 					updatePlaying={index_playing === i + 1}
-					onPlay={(b: boolean) => {
+					onPlay={(b: boolean): void => {
 						if (b) {
 							setIndex(i + 1)
 						} else {

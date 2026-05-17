@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+
 // dependencies
-import { type FC, Fragment, useCallback, useEffect, useRef, useState } from 'react'
+import { type FC, type JSX, Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { Playbar } from 'maxmsp-gui'
 
 // src
@@ -17,7 +19,7 @@ export const Submission: FC<{
 	audio = [],
 	video = [],
 	updatePlaying,
-	onPlay = () => {
+	onPlay = (): void => {
 		/* */
 	},
 }) => {
@@ -28,13 +30,13 @@ export const Submission: FC<{
 	// set playbar width relative to parent width
 	const self = useRef<HTMLDivElement>(null)
 	const [width, setWidth] = useState<number>(0)
-	useEffect(() => {
+	useEffect((): (() => void) => {
 		const listener = (): void => {
 			setWidth(self.current?.clientWidth ?? 0)
 		}
 		window.addEventListener('resize', listener)
 		listener()
-		return () => {
+		return (): void => {
 			window.removeEventListener('resize', listener)
 		}
 	}, [])
@@ -45,7 +47,7 @@ export const Submission: FC<{
 	const [audio_time, setCurrentTime] = useState<number>(0)
 	const interval = useRef<number | null>(null)
 	// toggle playing, fire call back, and destroy interval
-	const setPlaying = useCallback((b: boolean) => {
+	const setPlaying = useCallback((b: boolean): void => {
 		setPlayingState(b)
 		if (!b && interval.current) {
 			window.clearInterval(interval.current)
@@ -53,7 +55,7 @@ export const Submission: FC<{
 		}
 	}, [])
 	// update playing
-	useEffect(() => {
+	useEffect((): void => {
 		// eslint-disable-next-line no-undefined
 		if (updatePlaying === undefined) {
 			setPlaying(false)
@@ -67,9 +69,9 @@ export const Submission: FC<{
 		}
 	}, [updatePlaying, setPlaying])
 	// run an interval to keep track of time
-	useEffect(() => {
+	useEffect((): void => {
 		if (audio_playing) {
-			interval.current = window.setInterval(() => {
+			interval.current = window.setInterval((): void => {
 				if (audio_ref.current && !audio_ref.current.ended) {
 					setCurrentTime(audio_ref.current.currentTime / audio_ref.current.duration)
 				} else {
@@ -81,7 +83,7 @@ export const Submission: FC<{
 		}
 	}, [audio_playing, onPlay, setPlaying])
 	// clean up on unmount
-	useEffect(() => {
+	useEffect((): (() => void) => {
 		const cleanup_audio = audio_ref.current
 		return (): void => {
 			cleanup_audio?.pause()
@@ -92,14 +94,14 @@ export const Submission: FC<{
 	}, [])
 
 	// event handlers
-	const _onChange = (v: number) => {
+	const _onChange = (v: number): void => {
 		// scrub through the audio
 		setCurrentTime(v)
 		if (audio_ref.current) {
 			audio_ref.current.currentTime = v * audio_ref.current.duration
 		}
 	}
-	const _onPlay = (b: boolean) => {
+	const _onPlay = (b: boolean): void => {
 		// play or pause the audio
 		if (b && audio_ref.current) {
 			setPlaying(true)
@@ -130,9 +132,10 @@ export const Submission: FC<{
 				<div className='videos'>
 					{video.map((hash: string) => (
 						<iframe
-							allow='accelerometer; autoplay; encrypted-media; fullscreen; gyroscope;'
+							allow='autoplay; encrypted-media; fullscreen; picture-in-picture; web-share'
 							key={hash}
 							referrerPolicy='strict-origin-when-cross-origin'
+							sandbox='allow-scripts allow-same-origin'
 							src={`https://www.youtube.com/embed/${hash}?theme=dark&color=white`}
 							title={author ? author.name : 'anonymous'}
 						/>
@@ -140,7 +143,7 @@ export const Submission: FC<{
 				</div>
 			)}
 			<h3>{author ? author.name.toLowerCase() : 'anonymous'}</h3>
-			{author?.links.map((obj: { href: string; type: 'instagram' | 'vimeo' | 'website' }) => {
+			{author?.links.map((obj: { href: string; type: 'instagram' | 'vimeo' | 'website' }): JSX.Element => {
 				const href = ((): string => {
 					switch (obj.type) {
 						case 'instagram':
