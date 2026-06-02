@@ -1,3 +1,4 @@
+// biome-ignore-all lint/a11y/useMediaCaption : the audio file is intended as music, and likely does not have captions
 /* eslint-disable react-hooks/set-state-in-effect */
 
 // dependencies
