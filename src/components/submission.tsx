@@ -1,4 +1,6 @@
 // biome-ignore-all lint/a11y/useMediaCaption : the audio file is intended as music, and likely does not have captions
+/* eslint-disable @eslint-react/dom-no-unsafe-iframe-sandbox */
+/* eslint-disable @eslint-react/set-state-in-effect */
 /* eslint-disable react-hooks/set-state-in-effect */
 
 // dependencies
@@ -9,21 +11,19 @@ import { Playbar } from 'maxmsp-gui'
 import type { SubmissionJSON } from '../config.ts'
 import '../scss/submission.scss'
 
+// constexpr
+const _defaultArray: string[] = []
+const _defaultVoidFunction = (): void => {
+	/* */
+}
+
 export const Submission: FC<{
 	author?: SubmissionJSON['author']
 	audio?: SubmissionJSON['audio']
 	video?: SubmissionJSON['video']
 	updatePlaying?: boolean
 	onPlay?: (b: boolean) => void
-}> = ({
-	author,
-	audio = [],
-	video = [],
-	updatePlaying,
-	onPlay = (): void => {
-		/* */
-	},
-}) => {
+}> = ({ author, audio = _defaultArray, video = _defaultArray, updatePlaying = false, onPlay = _defaultVoidFunction }) => {
 	/*
 	Generates an interactive submission from a given object of type SubmissionJSON.
 	*/
@@ -44,12 +44,12 @@ export const Submission: FC<{
 
 	// synchronise the audio and the slider
 	const audio_ref = useRef<HTMLAudioElement>(null)
-	const [audio_playing, setPlayingState] = useState<boolean>(false)
-	const [audio_time, setCurrentTime] = useState<number>(0)
+	const [audio_playing, setAudioPlaying] = useState<boolean>(false)
+	const [audio_time, setAudioTime] = useState<number>(0)
 	const interval = useRef<number | null>(null)
 	// toggle playing, fire call back, and destroy interval
 	const setPlaying = useCallback((b: boolean): void => {
-		setPlayingState(b)
+		setAudioPlaying(b)
 		if (!b && interval.current) {
 			window.clearInterval(interval.current)
 			interval.current = null
@@ -57,16 +57,11 @@ export const Submission: FC<{
 	}, [])
 	// update playing
 	useEffect((): void => {
-		// eslint-disable-next-line no-undefined
-		if (updatePlaying === undefined) {
-			setPlaying(false)
+		setPlaying(updatePlaying)
+		if (updatePlaying) {
+			void audio_ref.current?.play()
 		} else {
-			setPlaying(updatePlaying)
-			if (updatePlaying) {
-				void audio_ref.current?.play()
-			} else {
-				audio_ref.current?.pause()
-			}
+			audio_ref.current?.pause()
 		}
 	}, [updatePlaying, setPlaying])
 	// run an interval to keep track of time
@@ -74,10 +69,10 @@ export const Submission: FC<{
 		if (audio_playing) {
 			interval.current = window.setInterval((): void => {
 				if (audio_ref.current && !audio_ref.current.ended) {
-					setCurrentTime(audio_ref.current.currentTime / audio_ref.current.duration)
+					setAudioTime(audio_ref.current.currentTime / audio_ref.current.duration)
 				} else {
 					setPlaying(false)
-					setCurrentTime(0)
+					setAudioTime(0)
 					onPlay(false)
 				}
 			}, 10)
@@ -97,7 +92,7 @@ export const Submission: FC<{
 	// event handlers
 	const _onChange = (v: number): void => {
 		// scrub through the audio
-		setCurrentTime(v)
+		setAudioTime(v)
 		if (audio_ref.current) {
 			audio_ref.current.currentTime = v * audio_ref.current.duration
 		}
@@ -145,7 +140,7 @@ export const Submission: FC<{
 			)}
 			<h3>{author ? author.name.toLowerCase() : 'anonymous'}</h3>
 			{author?.links.map((obj: { href: string; type: 'instagram' | 'vimeo' | 'website' }): JSX.Element => {
-				const href = ((): string => {
+				const _href = (): string => {
 					switch (obj.type) {
 						case 'instagram':
 							return `https://instagram.com/${obj.href}`
@@ -154,12 +149,12 @@ export const Submission: FC<{
 						default:
 							return obj.href
 					}
-				})()
+				}
 				return (
 					<p key={obj.href}>
 						<i>{obj.type}</i>
 						<span> : </span>
-						<a href={href} rel='noreferrer' target='_blank'>
+						<a href={_href()} rel='noreferrer' target='_blank'>
 							{obj.href.replace(/.+\/\/|www.|/gu, '')}
 						</a>
 					</p>

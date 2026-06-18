@@ -1,4 +1,4 @@
-// biome-ignore-all lint/nursery/noJsxPropsBind : here prop bindings are used alongside Aray.map()
+// biome-ignore-all lint/performance/noJsxPropsBind : here prop bindings are used alongside Aray.map()
 
 import { type FC, useState } from 'react'
 // src
@@ -14,21 +14,21 @@ export const Submissions: FC<{
 	This component renders an array of submissions, making sure that only submission is allowed to be playing at
 	*/
 
-	const [index_playing, setIndex] = useState<number>(0)
+	const [index_playing, setIndexPlaying] = useState<number>(0)
 	return (
 		<>
 			{(randomise_config ? random_config_cache : config).map((S: SubmissionJSON, i: number) => (
 				<Submission
-					{...S}
-					key={i.toString()}
+					key={`submission-${i.toString()}`}
 					updatePlaying={index_playing === i + 1}
 					onPlay={(b: boolean): void => {
 						if (b) {
-							setIndex(i + 1)
+							setIndexPlaying(i + 1)
 						} else {
-							setIndex(0)
+							setIndexPlaying(0)
 						}
 					}}
+					{...S}
 				/>
 			))}
 		</>
