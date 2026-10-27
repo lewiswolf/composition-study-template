@@ -5,7 +5,7 @@ import { type FC, useState } from 'react'
 import { type SubmissionJSON, config } from '../config.ts'
 import { Submission } from './submission.tsx'
 
-const random_config_cache: readonly SubmissionJSON[] = config.sort(() => Math.random() - 0.5)
+const random_config_cache: readonly SubmissionJSON[] = config.sort((): number => Math.random() - 0.5)
 
 export const Submissions: FC<{
 	randomise_config?: boolean

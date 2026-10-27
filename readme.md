@@ -4,7 +4,7 @@ A template for posting artworks created for a composition study.
 
 # Dependencies
 
-- [node](https://formulae.brew.sh/formula/node)
+- [bun](https://bun.sh/)
 
 # Install
 
@@ -12,7 +12,7 @@ First start your own repository using this one as a template, then...
 
 ```bash
 git clone <your-repo>
-npm install --include=dev
+bun install
 ```
 
 # Customise
@@ -131,20 +131,20 @@ export const config: SubmissionJSON[] = [
 # Develop
 
 ```bash
-npm run dev
-npm run format
+bun run dev
+bun run format
 ```
 
 # Test
 
 ```bash
-npm run test
+bun run test
 ```
 
 # Upload to Github Pages
 
 ```bash
-npm run deploy
+bun run deploy
 ```
 
 # Updating the Template

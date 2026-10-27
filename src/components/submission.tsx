@@ -51,7 +51,7 @@ export const Submission: FC<{
 	// toggle playing, fire call back, and destroy interval
 	const setPlaying = useCallback((b: boolean): void => {
 		setAudioPlaying(b)
-		if (!b && interval.current) {
+		if (!b && typeof interval.current === 'number') {
 			window.clearInterval(interval.current)
 			interval.current = null
 		}
@@ -84,7 +84,7 @@ export const Submission: FC<{
 		const cleanup_audio = audio_ref.current
 		return (): void => {
 			cleanup_audio?.pause()
-			if (interval.current) {
+			if (typeof interval.current === 'number') {
 				clearInterval(interval.current)
 			}
 		}
