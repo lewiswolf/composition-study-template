@@ -2,11 +2,11 @@
 
 A template for posting artworks created for a composition study.
 
-# Dependencies
+## Dependencies
 
 - [bun](https://bun.sh/)
 
-# Install
+## Install
 
 First start your own repository using this one as a template, then...
 
@@ -15,7 +15,7 @@ git clone <your-repo>
 bun install
 ```
 
-# Customise
+## Customise
 
 You will need to update various files to make this template your own.
 
@@ -39,9 +39,9 @@ Add the title of your study, your own name, and the project description. This is
 	<head>
 		<title>Title</title>
 		...
-		<meta name="author" content="author" />
+		<meta content="<your name>" name="author" />
 		...
-		<meta name="description" content="description" />
+		<meta content="<your description>" name="description" />
 		...
 	</head>
 	...
@@ -128,26 +128,26 @@ export const config: SubmissionJSON[] = [
 ] as const
 ```
 
-# Develop
+## Develop
 
 ```bash
 bun run dev
 bun run format
 ```
 
-# Test
+## Test
 
 ```bash
 bun run test
 ```
 
-# Upload to Github Pages
+## Upload to Github Pages
 
 ```bash
 bun run deploy
 ```
 
-# Updating the Template
+## Updating the Template
 
 ```bash
 git remote add template https://github.com/lewiswolf/composition-study-template

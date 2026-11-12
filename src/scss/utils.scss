@@ -1,3 +1,5 @@
+// biome-ignore-all lint/suspicious/useBaseline : ::selection is supported across all modern browsers
+
 // var
 
 $ipad: 812px;
@@ -17,7 +19,7 @@ $highlight: rgb(180 180 180);
 @mixin video() {
 	width: auto;
 	max-width: 100%;
-	aspect-ratio: 16/9;
+	aspect-ratio: 16 / 9;
 	justify-self: center;
 	user-select: none;
 	-webkit-user-select: none;
