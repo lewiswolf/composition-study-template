@@ -133,7 +133,7 @@ export const Submission: FC<{
 							key={hash}
 							referrerPolicy='strict-origin-when-cross-origin'
 							sandbox='allow-scripts allow-same-origin'
-							src={`https://www.youtube.com/embed/${hash}?theme=dark&color=white`}
+							src={`https://youtube.com/embed/${hash}?theme=dark&color=white`}
 							title={author ? author.name : 'anonymous'}
 						/>
 					))}
